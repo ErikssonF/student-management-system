@@ -9,6 +9,15 @@
         <password>sa</password>
     </data-source>
 
+    <data-source>
+        <name>java:app/MyApp/JPADataSource</name>
+        <class-name>com.mysql.cj.jdbc.MysqlXADataSource</class-name>
+        <url>jdbc:mysql://localhost:3306/test?allowPublicKeyRetrieval=true&amp;useSSL=false</url>
+        <user>user</user>
+        <password>password</password>
+    </data-source>
+
+
     <servlet>
         <servlet-name>h2-console</servlet-name>
         <servlet-class>org.h2.server.web.WebServlet</servlet-class>
