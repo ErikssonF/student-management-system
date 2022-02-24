@@ -1,6 +1,7 @@
 package se.iths.rest;
 
 
+import se.iths.ErrorMessage;
 import se.iths.entity.Student;
 import se.iths.service.StudentService;
 import javax.inject.Inject;
@@ -40,7 +41,10 @@ public class StudentRest {
         List<Student> foundStudent = studentService.findStudentByLastName(lastName);
 
         if (foundStudent.isEmpty())
-            throw new NotFoundException("No student with lastname: " + lastName + " was found.");
+                throw new StudentNotFoundException(new ErrorMessage(
+                                "404",
+                                "No students with lastname: " + lastName + " was found",
+                                "/students/" + lastName));
 
         return Response.ok(foundStudent).build();
     }
