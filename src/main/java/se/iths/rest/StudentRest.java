@@ -22,7 +22,6 @@ public class StudentRest {
     @Path("")
     @POST
     public Response createStudent(Student student){
-
         studentService.createStudent(student);
         return Response.ok(student).build();
     }
@@ -50,10 +49,17 @@ public class StudentRest {
     }
     @Path("")
     @GET
-    public Response getAllStudents(@QueryParam("orderBy") List<String> orderBy) {
+    public Response getAllStudents(@QueryParam("students") List<String> students) {
 
-        List<Student> foundItems = studentService.getAllStudents();
-        return Response.ok(foundItems).build();
+        List<Student> foundStudent = studentService.getAllStudents();
+
+        if (foundStudent.isEmpty())
+            throw new StudentNotFoundException(new ErrorMessage(
+                    "404",
+                    "No students was found",
+                    "/students"));
+
+        return Response.ok(foundStudent).build();
 
     }
 
