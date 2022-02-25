@@ -24,7 +24,7 @@ public class StudentRest {
     public Response createStudent(Student student){
 
         if(student.getFirstName().isEmpty() || student.getLastName().isEmpty() ||student.getEmail().isEmpty())
-            throw new IllegalArgumentException("Invalid data entered");
+            throw new InvalidDataException(new ErrorMessage("400", "Invalid data used for request", "/students"));
 
         studentService.createStudent(student);
         return Response.ok(student).build();
