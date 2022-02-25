@@ -1,8 +1,9 @@
 package se.iths.rest;
 
-
-import se.iths.ErrorMessage;
+import se.iths.errorMessage.ErrorMessage;
 import se.iths.entity.Student;
+import se.iths.errorMessage.InvalidDataException;
+import se.iths.errorMessage.StudentNotFoundException;
 import se.iths.service.StudentService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -24,7 +25,10 @@ public class StudentRest {
     public Response createStudent(Student student){
 
         if(student.getFirstName().isEmpty() || student.getLastName().isEmpty() ||student.getEmail().isEmpty())
-            throw new InvalidDataException(new ErrorMessage("400", "Invalid data used for request", "/students"));
+            throw new InvalidDataException(new ErrorMessage(
+                    "400",
+                    "Invalid data used for request",
+                    "/students"));
 
         studentService.createStudent(student);
         return Response.ok(student).build();
@@ -37,7 +41,8 @@ public class StudentRest {
         Optional<Student> foundStudent = studentService.getStudentById(id);
 
         if(foundStudent.isEmpty())
-            throw new StudentNotFoundException(new ErrorMessage("404","No students with ID: " + id + " was found",
+            throw new StudentNotFoundException(new ErrorMessage("404",
+                    "No students with ID: " + id + " was found",
                     "/students/" + id));
 
 
