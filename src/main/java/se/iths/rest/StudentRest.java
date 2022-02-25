@@ -65,12 +65,12 @@ public class StudentRest {
 
     @Path("{id}")
     @DELETE
-    public Response deleteStudent(@PathParam("id") Long id){
+    public Response deleteStudent(@PathParam("id") Long id) {
 
         Optional<Student> foundStudent = studentService.getStudentById(id);
 
         if (foundStudent.isEmpty())
-            throw new NotFoundException("No student with id: " + id + " was found.");
+            return Response.ok().status(Response.Status.NO_CONTENT).build();
 
         studentService.deleteStudent(id);
 
