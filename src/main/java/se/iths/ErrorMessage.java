@@ -15,19 +15,11 @@ public class ErrorMessage {
         this.url = url;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
+    public LocalDateTime getLocalDateTime() {return localDateTime;}
 
-    public String getErrorcode() {
-        return errorcode;
-    }
+    public String getErrorcode() {return errorcode;}
 
-    public String getUrl() {
-        return url;
-    }
+    public String getUrl() {return url;}
 
-    public String getMessage() {
-        return message;
-    }
+    public String getMessage() {return message;}
 }

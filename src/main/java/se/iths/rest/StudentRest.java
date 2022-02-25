@@ -22,13 +22,25 @@ public class StudentRest {
     @Path("")
     @POST
     public Response createStudent(Student student){
+
+        if(student.getFirstName().isEmpty() || student.getLastName().isEmpty() ||student.getEmail().isEmpty())
+            throw new IllegalArgumentException("Invalid data entered");
+
         studentService.createStudent(student);
         return Response.ok(student).build();
     }
 
-    @Path("")
+    @Path("{id}")
     @PUT
-    public Response updateStudent(Student student) {
+    public Response updateStudent(@PathParam("id") Long id, Student student) {
+
+        Optional<Student> foundStudent = studentService.getStudentById(id);
+
+        if(foundStudent.isEmpty())
+            throw new StudentNotFoundException(new ErrorMessage("404","No students with ID: " + id + " was found",
+                    "/students/" + id));
+
+
         studentService.updateStudent(student);
         return Response.ok(student).build();
     }
