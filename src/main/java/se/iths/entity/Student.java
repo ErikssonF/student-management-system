@@ -21,6 +21,8 @@ public class Student {
     private String lastName;
     @NotEmpty
     private String email;
+    @NotEmpty
+    private String subject;
 
     public Long getId() {return id;}
 
