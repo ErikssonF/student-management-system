@@ -3,6 +3,7 @@ package se.iths.rest;
 import se.iths.entity.Teacher;
 import se.iths.errorMessage.EntityNotFoundException;
 import se.iths.errorMessage.ErrorMessage;
+import se.iths.errorMessage.InvalidDataException;
 import se.iths.service.EntityService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -23,6 +24,12 @@ public class TeacherRest {
     @Path("")
     @POST
     public Response createTeacher(Teacher teacher) {
+
+        if(teacher.getName().isEmpty() || teacher.getLastName().isEmpty() ||teacher.getAge().isEmpty())
+            throw new InvalidDataException(new ErrorMessage(
+                    "400",
+                    "Invalid data used for request",
+                    "/students"));
 
         entityService.create(teacher);
         return Response.ok(teacher).build();
