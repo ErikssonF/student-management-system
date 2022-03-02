@@ -2,6 +2,8 @@ package se.iths.service;
 
 import se.iths.dao.EntityDao;
 import se.iths.entity.Student;
+import se.iths.entity.Teacher;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -45,4 +47,10 @@ public class EntityService<T> implements EntityDao<T> {
                 .getResultList();
     }
 
+    public List<Teacher> getTeacherByLastname(String lastName) {
+        return entityManager.createQuery("SELECT t FROM Teacher t WHERE t.lastName = :lastName", Teacher.class)
+                .setParameter("lastName", lastName)
+                .getResultList();
+
+    }
 }

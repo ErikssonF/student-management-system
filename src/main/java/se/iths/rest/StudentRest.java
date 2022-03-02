@@ -1,11 +1,10 @@
 package se.iths.rest;
 
-import se.iths.errorMessage.ErrorMessage;
 import se.iths.entity.Student;
+import se.iths.errorMessage.ErrorMessage;
 import se.iths.errorMessage.InvalidDataException;
 import se.iths.errorMessage.StudentNotFoundException;
 import se.iths.service.EntityService;
-
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
