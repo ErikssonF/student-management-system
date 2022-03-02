@@ -3,7 +3,7 @@ package se.iths.rest;
 import se.iths.entity.Student;
 import se.iths.errorMessage.ErrorMessage;
 import se.iths.errorMessage.InvalidDataException;
-import se.iths.errorMessage.StudentNotFoundException;
+import se.iths.errorMessage.EntityNotFoundException;
 import se.iths.service.EntityService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -41,7 +41,7 @@ public class StudentRest {
         Optional<Student> foundStudent = entityService.getById(id);
 
         if(foundStudent.isEmpty())
-            throw new StudentNotFoundException(new ErrorMessage("404",
+            throw new EntityNotFoundException(new ErrorMessage("404",
                     "No students with ID: " + id + " was found",
                     "/students/" + id));
 
@@ -57,7 +57,7 @@ public class StudentRest {
         List<Student> foundStudent = entityService.getStudentByLastName(lastName);
 
         if (foundStudent.isEmpty())
-                throw new StudentNotFoundException(new ErrorMessage(
+                throw new EntityNotFoundException(new ErrorMessage(
                                 "404",
                                 "No students with lastname: " + lastName + " was found",
                                 "/students/" + lastName));
@@ -71,7 +71,7 @@ public class StudentRest {
         List<Student> foundStudent = entityService.getAll();
 
         if (foundStudent.isEmpty())
-            throw new StudentNotFoundException(new ErrorMessage(
+            throw new EntityNotFoundException(new ErrorMessage(
                     "404",
                     "No students was found",
                     "/students"));

@@ -1,11 +1,9 @@
 package se.iths.rest;
 
-import se.iths.entity.Student;
 import se.iths.entity.Teacher;
+import se.iths.errorMessage.EntityNotFoundException;
 import se.iths.errorMessage.ErrorMessage;
-import se.iths.errorMessage.StudentNotFoundException;
 import se.iths.service.EntityService;
-
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -38,8 +36,8 @@ public class TeacherRest {
         Optional<Teacher> foundStudent = entityService.getById(id);
 
         if (foundStudent.isEmpty())
-            throw new StudentNotFoundException(new ErrorMessage("404",
-                    "No students with ID: " + id + " was found",
+            throw new EntityNotFoundException(new ErrorMessage("404",
+                    "No teacher with ID: " + id + " was found",
                     "/students/" + id));
 
 
@@ -54,7 +52,7 @@ public class TeacherRest {
         List<Teacher> foundStudent = entityService.getTeacherByLastname(lastName);
 
         if (foundStudent.isEmpty())
-            throw new StudentNotFoundException(new ErrorMessage(
+            throw new EntityNotFoundException(new ErrorMessage(
                     "404",
                     "No teacher with lastname: " + lastName + " was found",
                     "/teachers/" + lastName));
@@ -68,11 +66,11 @@ public class TeacherRest {
 
         List<Teacher> foundStudent = entityService.getAll();
 
-//        if (foundStudent.isEmpty())
-//            throw new StudentNotFoundException(new ErrorMessage(
-//                    "404",
-//                    "No students was found",
-//                    "/students"));
+        if (foundStudent.isEmpty())
+            throw new EntityNotFoundException(new ErrorMessage(
+                    "404",
+                    "No teachers were found.",
+                    "/students"));
 
         return Response.ok(foundStudent).build();
 
