@@ -1,10 +1,10 @@
 package se.iths.rest;
 
-import se.iths.entity.Teacher;
+import se.iths.entity.Subject;
 import se.iths.errorMessage.EntityNotFoundException;
 import se.iths.errorMessage.ErrorMessage;
 import se.iths.errorMessage.InvalidDataException;
-import se.iths.service.TeacherService;
+import se.iths.service.SubjectService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,71 +12,70 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
-
-@Path("teachers")
+@Path("subjects")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TeacherRest {
+public class SubjectRest {
 
     @Inject
-    TeacherService teacherService;
+    SubjectService subjectService;
 
     @Path("")
     @POST
-    public Response createTeacher(Teacher teacher) {
+    public Response createSubject(Subject subject) {
 
-        if(teacher.getName().isEmpty() || teacher.getLastName().isEmpty() ||teacher.getAge().isEmpty())
+        if(subject.getSubjectName().isEmpty() || subject.getStudents().isEmpty() ||subject.getTeacher().isEmpty())
             throw new InvalidDataException(new ErrorMessage(
                     "400",
                     "Invalid data used for request",
                     "/students"));
 
-        teacherService.createTeacher(teacher);
-        return Response.ok(teacher).build();
+        subjectService.createSubject(subject);
+        return Response.ok(subject).build();
     }
 
     @Path("{id}")
     @PUT
 
-    public Response updateTeacher(@PathParam("id") Long id, Teacher teacher) {
+    public Response updateSubject(@PathParam("id") Long id, Subject subject) {
 
-        Optional<Teacher> foundStudent = teacherService.getTeacherById(id);
+        Optional<Subject> foundStudent = subjectService.getSubjectById(id);
 
         if (foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage("404",
-                    "No teacher with ID: " + id + " was found",
+                    "No subject with ID: " + id + " was found",
                     "/students/" + id));
 
 
-        teacherService.updateTeacher(teacher);
-        return Response.ok(teacher).build();
+        subjectService.updateSubject(subject);
+        return Response.ok(subject).build();
     }
 
     @Path("lastname")
     @GET
-    public Response getTeacher(@QueryParam("lastname") String lastName) {
+    public Response getSubject(@QueryParam("lastname") String lastName) {
 
-        List<Teacher> foundStudent = teacherService.findTeacherByLastName(lastName);
+        List<Subject> foundStudent = subjectService.findSubjectByLastName(lastName);
 
         if (foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage(
                     "404",
-                    "No teacher with lastname: " + lastName + " was found",
-                    "/teachers/" + lastName));
+                    "No subject with lastname: " + lastName + " was found",
+                    "/subjects/" + lastName));
 
         return Response.ok(foundStudent).build();
     }
 
     @Path("")
     @GET
-    public Response getAllTeachers(@QueryParam("teachers") List<String> teachers) {
+    public Response getAllSubjects(@QueryParam("subjects") List<String> subjects) {
 
-        List<Teacher> foundStudent = teacherService.getAllTeachers();
+        List<Subject> foundStudent = subjectService.getAllSubjects();
 
         if (foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage(
                     "404",
-                    "No teachers were found.",
+                    "No subjects were found.",
                     "/students"));
 
         return Response.ok(foundStudent).build();
@@ -85,14 +84,14 @@ public class TeacherRest {
 
     @Path("{id}")
     @DELETE
-    public Response deleteTeacher(@PathParam("id") Long id) {
+    public Response deleteSubject(@PathParam("id") Long id) {
 
-        Optional<Teacher> foundStudent = teacherService.getTeacherById(id);
+        Optional<Subject> foundStudent = subjectService.getSubjectById(id);
 
         if (foundStudent.isEmpty())
             return Response.ok().status(Response.Status.NO_CONTENT).build();
 
-        teacherService.deleteTeacher(id);
+        subjectService.deleteSubject(id);
 
         return Response.ok(foundStudent).build();
     }

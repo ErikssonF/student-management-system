@@ -4,7 +4,7 @@ import se.iths.entity.Student;
 import se.iths.errorMessage.ErrorMessage;
 import se.iths.errorMessage.InvalidDataException;
 import se.iths.errorMessage.EntityNotFoundException;
-import se.iths.service.EntityService;
+import se.iths.service.StudentService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class StudentRest {
 
     @Inject
-    EntityService<Student> entityService;
+    StudentService studentService;
 
     @Path("")
     @POST
@@ -30,7 +30,7 @@ public class StudentRest {
                     "Invalid data used for request",
                     "/students"));
 
-        entityService.create(student);
+        studentService.createStudent(student);
         return Response.ok(student).build();
     }
     @Path("{id}")
@@ -38,7 +38,7 @@ public class StudentRest {
 
     public Response updateStudent(@PathParam("id") Long id, Student student) {
 
-        Optional<Student> foundStudent = entityService.getById(id);
+        Optional<Student> foundStudent = studentService.getStudentById(id);
 
         if(foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage("404",
@@ -46,7 +46,7 @@ public class StudentRest {
                     "/students/" + id));
 
 
-        entityService.update(student);
+        studentService.updateStudent(student);
         return Response.ok(student).build();
     }
 
@@ -54,7 +54,7 @@ public class StudentRest {
     @GET
     public Response getStudent(@QueryParam("lastname") String lastName){
 
-        List<Student> foundStudent = entityService.getStudentByLastName(lastName);
+        List<Student> foundStudent = studentService.findStudentByLastName(lastName);
 
         if (foundStudent.isEmpty())
                 throw new EntityNotFoundException(new ErrorMessage(
@@ -68,7 +68,7 @@ public class StudentRest {
     @GET
     public Response getAllStudents(@QueryParam("students") List<String> students) {
 
-        List<Student> foundStudent = entityService.getAll();
+        List<Student> foundStudent = studentService.getAllStudents();
 
         if (foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage(
@@ -84,12 +84,12 @@ public class StudentRest {
     @DELETE
     public Response deleteStudent(@PathParam("id") Long id) {
 
-        Optional<Student> foundStudent = entityService.getById(id);
+        Optional<Student> foundStudent = studentService.getStudentById(id);
 
         if (foundStudent.isEmpty())
             return Response.ok().status(Response.Status.NO_CONTENT).build();
 
-        entityService.delete(id);
+        studentService.deleteStudent(id);
 
         return Response.ok(foundStudent).build();
     }
