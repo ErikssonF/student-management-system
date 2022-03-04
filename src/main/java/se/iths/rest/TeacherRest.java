@@ -1,5 +1,6 @@
 package se.iths.rest;
 
+import se.iths.entity.Subject;
 import se.iths.entity.Teacher;
 import se.iths.errorMessage.EntityNotFoundException;
 import se.iths.errorMessage.ErrorMessage;
@@ -29,7 +30,7 @@ public class TeacherRest {
             throw new InvalidDataException(new ErrorMessage(
                     "400",
                     "Invalid data used for request",
-                    "/students"));
+                    "/teachers"));
 
         teacherService.createTeacher(teacher);
         return Response.ok(teacher).build();
@@ -45,7 +46,7 @@ public class TeacherRest {
         if (foundStudent.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage("404",
                     "No teacher with ID: " + id + " was found",
-                    "/students/" + id));
+                    "/teachers/" + id));
 
 
         teacherService.updateTeacher(teacher);
@@ -77,7 +78,7 @@ public class TeacherRest {
             throw new EntityNotFoundException(new ErrorMessage(
                     "404",
                     "No teachers were found.",
-                    "/students"));
+                    "/teachers"));
 
         return Response.ok(foundStudent).build();
 
@@ -95,5 +96,18 @@ public class TeacherRest {
         teacherService.deleteTeacher(id);
 
         return Response.ok(foundStudent).build();
+    }
+
+    @Path("{id}/subject")
+    @POST
+    public Response addSubjectToTeacher(@PathParam("id") Long id, Subject subject) {
+        Optional<Teacher> foundTeacher = teacherService.getTeacherById(id);
+        if(foundTeacher.isEmpty())
+            throw new EntityNotFoundException(new ErrorMessage(
+                    "404",
+                    "No teachers were found.",
+                    "/students"));
+        teacherService.addSubjectToTeacher(id, subject);
+        return Response.ok().build();
     }
 }

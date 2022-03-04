@@ -1,14 +1,12 @@
 package se.iths.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Subject {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,10 +14,25 @@ public class Subject {
 
     @NotEmpty
     private String subjectName;
-    @NotEmpty
-    private String students;
-    @NotEmpty
-    private String teacher;
+    @ManyToMany
+    private Set<Student> students = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "STUDENT",
+    joinColumns = @JoinColumn(name = "subject", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "STUDENT_ID",referencedColumnName = "id"))
+    private Teacher teacher;
+
+
+
+    public void addStudent(Student student){
+        students.add(student);
+        student.addSubject(this);
+    }
+
+    public void removeStudent(Student student){
+        students.remove(student);
+        student.setSubject(null);
+    }
 
     public Long getId() {
         return id;
@@ -37,19 +50,19 @@ public class Subject {
         this.subjectName = subjectName;
     }
 
-    public String getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(String students) {
-        this.students = students;
-    }
-
-    public String getTeacher() {
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 }

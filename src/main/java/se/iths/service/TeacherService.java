@@ -1,5 +1,6 @@
 package se.iths.service;
 
+import se.iths.entity.Subject;
 import se.iths.entity.Teacher;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,5 +35,9 @@ public class TeacherService {
     public void deleteTeacher(Long id){
         Teacher foundTeacher = entityManager.find(Teacher.class,id);
         entityManager.remove(foundTeacher);
+    }
+    public Subject addSubjectToTeacher(Long id, Subject subject) {
+        entityManager.find(Teacher.class, id).addSubject(subject);
+        return subject;
     }
 }

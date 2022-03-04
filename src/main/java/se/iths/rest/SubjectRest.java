@@ -24,7 +24,7 @@ public class SubjectRest {
     @POST
     public Response createSubject(Subject subject) {
 
-        if(subject.getSubjectName().isEmpty() || subject.getStudents().isEmpty() ||subject.getTeacher().isEmpty())
+        if(subject.getSubjectName().isEmpty() || subject.getStudents().isEmpty())
             throw new InvalidDataException(new ErrorMessage(
                     "400",
                     "Invalid data used for request",

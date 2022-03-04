@@ -1,10 +1,9 @@
 package se.iths.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Student {
@@ -21,8 +20,15 @@ public class Student {
     private String lastName;
     @NotEmpty
     private String email;
-//    @NotEmpty
-//    private String subject;
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    private Set<Subject> subjects = new HashSet<>();
+
+    public void addSubject(Subject subject) {
+        subjects.add(subject);
+    }
+    public void removeSubject(Subject subject){
+        subjects.remove(subject);
+    }
 
     public Long getId() {return id;}
 
@@ -61,5 +67,9 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Set<Subject> getSubject() {return subjects;}
+
+    public void setSubject(Set<Subject> subjects) {this.subjects = subjects;}
 }
 
