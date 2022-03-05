@@ -1,6 +1,8 @@
 package se.iths.entity;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,39 +11,45 @@ import java.util.Set;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String phoneNumber;
-
     @NotEmpty
     private String firstName;
     @NotEmpty
     private String lastName;
     @NotEmpty
+    @Email
     private String email;
+    private String phoneNumber;
+
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
     private Set<Subject> subjects = new HashSet<>();
 
     public void addSubject(Subject subject) {
         subjects.add(subject);
-    }
-    public void removeSubject(Subject subject){
-        subjects.remove(subject);
+        subject.addStudent(this);
     }
 
-    public Long getId() {return id;}
+    public void removeSubject(Subject subject) {
+        subjects.remove(subject);
+        subject.setStudent(null);
+    }
+
+    @JsonbTransient
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -68,8 +76,11 @@ public class Student {
         this.email = email;
     }
 
-    public Set<Subject> getSubject() {return subjects;}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-    public void setSubject(Set<Subject> subjects) {this.subjects = subjects;}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
-

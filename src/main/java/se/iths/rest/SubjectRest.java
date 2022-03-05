@@ -24,7 +24,7 @@ public class SubjectRest {
     @POST
     public Response createSubject(Subject subject) {
 
-        if(subject.getSubjectName().isEmpty() || subject.getStudents().isEmpty())
+        if(subject.getSubjectName().isEmpty() || subject.getStudent().isEmpty())
             throw new InvalidDataException(new ErrorMessage(
                     "400",
                     "Invalid data used for request",
@@ -39,9 +39,9 @@ public class SubjectRest {
 
     public Response updateSubject(@PathParam("id") Long id, Subject subject) {
 
-        Optional<Subject> foundStudent = subjectService.getSubjectById(id);
+        Optional<Subject> foundSubject = subjectService.getSubjectById(id);
 
-        if (foundStudent.isEmpty())
+        if (foundSubject.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage("404",
                     "No subject with ID: " + id + " was found",
                     "/students/" + id));
@@ -51,34 +51,19 @@ public class SubjectRest {
         return Response.ok(subject).build();
     }
 
-    @Path("lastname")
-    @GET
-    public Response getSubject(@QueryParam("lastname") String lastName) {
-
-        List<Subject> foundStudent = subjectService.findSubjectByLastName(lastName);
-
-        if (foundStudent.isEmpty())
-            throw new EntityNotFoundException(new ErrorMessage(
-                    "404",
-                    "No subject with lastname: " + lastName + " was found",
-                    "/subjects/" + lastName));
-
-        return Response.ok(foundStudent).build();
-    }
-
     @Path("")
     @GET
     public Response getAllSubjects(@QueryParam("subjects") List<String> subjects) {
 
-        List<Subject> foundStudent = subjectService.getAllSubjects();
+        List<Subject> foundSubject = subjectService.getAllSubjects();
 
-        if (foundStudent.isEmpty())
+        if (foundSubject.isEmpty())
             throw new EntityNotFoundException(new ErrorMessage(
                     "404",
                     "No subjects were found.",
                     "/students"));
 
-        return Response.ok(foundStudent).build();
+        return Response.ok(foundSubject).build();
 
     }
 
@@ -86,13 +71,13 @@ public class SubjectRest {
     @DELETE
     public Response deleteSubject(@PathParam("id") Long id) {
 
-        Optional<Subject> foundStudent = subjectService.getSubjectById(id);
+        Optional<Subject> foundSubject = subjectService.getSubjectById(id);
 
-        if (foundStudent.isEmpty())
+        if (foundSubject.isEmpty())
             return Response.ok().status(Response.Status.NO_CONTENT).build();
 
         subjectService.deleteSubject(id);
 
-        return Response.ok(foundStudent).build();
+        return Response.ok(foundSubject).build();
     }
 }

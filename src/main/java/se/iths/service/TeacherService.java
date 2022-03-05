@@ -1,6 +1,5 @@
 package se.iths.service;
 
-import se.iths.entity.Subject;
 import se.iths.entity.Teacher;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,33 +10,33 @@ import java.util.Optional;
 @Transactional
 public class TeacherService {
 
-
     @PersistenceContext
     EntityManager entityManager;
 
-    public void createTeacher(Teacher teacher){ entityManager.persist(teacher);}
-
-    public void updateTeacher(Teacher teacher) {entityManager.merge(teacher);}
+    public void createTeacher(Teacher teacher) {
+        entityManager.persist(teacher);
+    }
 
     public Optional<Teacher> getTeacherById(Long id) {
-        return Optional.ofNullable(entityManager.find(Teacher.class, id));}
-
-    public List<Teacher> findTeacherByLastName(String lastName) {
-
-        return entityManager.createQuery("SELECT s FROM Teacher s WHERE s.lastName = :lastName", Teacher.class)
-                .setParameter("lastName", lastName)
-                .getResultList();
-    }
-    public List<Teacher> getAllTeachers(){
-        return entityManager.createQuery("SELECT s FROM Teacher s", Teacher.class).getResultList();
+        return Optional.ofNullable(entityManager.find(Teacher.class, id));
     }
 
-    public void deleteTeacher(Long id){
-        Teacher foundTeacher = entityManager.find(Teacher.class,id);
+    public List<Teacher> getAllTeachers() {
+        return entityManager.createQuery("SELECT t FROM Teacher t", Teacher.class).getResultList();
+    }
+
+    public void updateTeacher(Teacher teacher) {
+        entityManager.merge(teacher);
+    }
+
+    public void deleteTeacher(Long id) {
+        Teacher foundTeacher = entityManager.find(Teacher.class, id);
         entityManager.remove(foundTeacher);
     }
-    public Subject addSubjectToTeacher(Long id, Subject subject) {
-        entityManager.find(Teacher.class, id).addSubject(subject);
-        return subject;
+
+    public List<Teacher> getTeacherByLastName(String lastName) {
+        return entityManager.createQuery("SELECT t FROM Teacher t WHERE t.lastName = :lastName", Teacher.class)
+                .setParameter("lastName", lastName)
+                .getResultList();
     }
 }
