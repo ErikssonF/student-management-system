@@ -48,11 +48,59 @@ The same goes for updating a student. Use the following endpoint and access the 
 	"phoneNumber": 1234
 }
 ```
-Deleting a student, accessed by id: **/students/{id}**
+
+To create a teacher, use /teachers: 
+
+```
+{
+	"firstName": "Fredrik",
+	"lastName": "Eriksson",
+	"age": "21"
+}
+```
+
+To create a subject with added students and a teacher, use /subjects:
+
+To update a subject, add "id" above "subjectname", as well as the id in the URL: **/subjects/{id}**.
+
+```
+{
+	"subjectName": "Math",
+	"student": [
+		{
+			"email": "Student@test.se",
+			"firstName": "firstName",
+			"id": 1,
+			"lastName": "lastName",
+			"phoneNumber": "123456789"
+		},
+		{
+			"email": "student@test.se",
+			"firstName": "firstName",
+			"id": 2,
+			"lastName": "lastName",
+			"phoneNumber": "123456789"
+		}
+	],
+	"teacher": {
+		"email": "teacher@email.se",
+		"firstName": "firstName",
+		"id": 6,
+		"lastName": "lastName",
+		"phoneNumber": "123456789"
+	}
+}
+```
+
+Deleting an entity, accessed by id: **/{endpoint}/{id}**
 
 Get all students with a specific last name (last name is chosen in the "Query"-tab in Insomnia: **/students/lastname**
 
 Get all students in the database: **/students**
+
+Get all teachers in the databse: **/teachers**
+
+Get all subjects: **/subjects**
 ## Author
 
 Fredrik Eriksson
